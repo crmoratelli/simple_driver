@@ -25,7 +25,7 @@ int main(){
 	
 	printf("Starting device test code example...\n");
 	
-	fd = open("/dev/hello_driver", O_RDWR);             // Open the device with read/write access
+	fd = open("/dev/simple_driver", O_RDWR);             // Open the device with read/write access
 	if (fd < 0){
 		perror("Failed to open the device...");
 		return errno;
