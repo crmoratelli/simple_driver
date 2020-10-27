@@ -35,7 +35,7 @@ int main(){
 	scanf("%[^\n]%*c", stringToSend);                // Read in a string (with spaces)
 	printf("Writing message to the device [%s].\n", stringToSend);
 	
-	ret = write(fd, stringToSend, strlen(stringToSend)); // Send the string to the LKM
+	ret = write(fd, stringToSend, strlen(stringToSend)+1); // Send the string to the LKM
 	if (ret < 0){
 		perror("Failed to write the message to the device.");
 		return errno;

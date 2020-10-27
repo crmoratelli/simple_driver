@@ -132,6 +132,7 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
 	int error_count = 0;
    
 	// copy_to_user has the format ( * to, *from, size) and returns 0 on success
+	// use copy_to_user to send data to userland.
 	error_count = copy_to_user(buffer, message, size_of_message);
 
 	if (error_count==0){            // if true then have success
@@ -155,7 +156,8 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
  */
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset){
 	if (len < sizeof(message)){
-		sprintf(message, "%s(%zu letters)", buffer, len);   // appending received string with its length
+		// use copy_from_user to read data from userland.
+		copy_from_user(message, buffer, len);
 		size_of_message = strlen(message);                 // store the length of the stored message
 		printk(KERN_INFO "Simple Driver: received %zu characters from the user\n", len);
 		
