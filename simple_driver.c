@@ -157,14 +157,14 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset){
 	if (len < sizeof(message)){
 		// use copy_from_user to read data from userland.
-		copy_from_user(message, buffer, len);
+		size_t ret = copy_from_user(message, buffer, len);
 		size_of_message = strlen(message);                 // store the length of the stored message
 		printk(KERN_INFO "Simple Driver: received %zu characters from the user\n", len);
 		
-		return len;
+		return ret;
 	}else{
 		sprintf(message, "(0 letters)");
-		printk(KERN_INFO "Simple Driver: too many characters to deal with\n", len);
+		printk(KERN_INFO "Simple Driver: too many characters to deal with %zu\n", len);
 		
 		return 0;
 	}

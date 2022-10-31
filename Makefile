@@ -1,12 +1,14 @@
 obj-m := simple_driver.o
-BUILDROOT_DIR := ../..
-KDIR := $(BUILDROOT_DIR)/output/build/linux-custom
+LOCAL_DIR := $(PWD)
+KDIR := $(LOCAL_DIR)/../../output/build/linux-custom
+COMPILER := $(LOCAL_DIR)/../../output/host/bin/arm-buildroot-linux-uclibcgnueabihf-
+
 
 all:
-	$(MAKE) -C $(KDIR) M=$$PWD
-	$(MAKE) -C $(KDIR) M=$$PWD modules_install INSTALL_MOD_PATH=../../target
+	$(MAKE) ARCH=arm CROSS_COMPILE=$(COMPILER) -C $(KDIR) M=$$PWD
+	$(MAKE) ARCH=arm CROSS_COMPILE=$(COMPILER) -C $(KDIR) M=$$PWD modules_install INSTALL_MOD_PATH=../../target
 	$(CROSS_COMPILE)gcc -o test_simple_driver test_simple_driver.c
-	cp test_simple_driver $(BUILDROOT_DIR)/output/target/bin
+	cp test_simple_driver $(LOCAL_DIR)/../../output/target/bin
 	
 clean:
 	rm -f *.o *.ko .*.cmd
